@@ -1,0 +1,1 @@
+# yomogidx.github.io

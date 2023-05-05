@@ -62,10 +62,18 @@ app.stage.addChild(textPoint);
  */
 var game = new game_js_1.Game(app);
 game.init();
+//クリック用オブジェ
+const windowSprite = new PIXI.Sprite(assets_js_1.Assets.instance.getTexture("window"));
+app.stage.addChild(windowSprite);
+windowSprite.interactive = true;
+windowSprite.on('pointerdown', () => { game.keyEvent(); });
+windowSprite.zIndex = 20;
+//pointertap
 /**
  * メインループ
  *
  */
+app.ticker.maxFPS = 60;
 app.ticker.add(animate);
 function animate(delta) {
     update();
@@ -106,13 +114,13 @@ function render() {
 /**
  * クリックイベント
  */
-window.addEventListener('mousedown', function (e) {
-    game.keyEvent();
-});
+//window.addEventListener('mousedown', function(e) {
+//    game.keyEvent();
+//});
 /**
  * スマホ
  */
-window.addEventListener('ontouchstart', function (e) {
-    game.keyEvent();
-});
+//window.addEventListener('ontouchstart', function(e) {
+//    game.keyEvent();
+//});
 //# sourceMappingURL=main.js.map

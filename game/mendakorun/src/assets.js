@@ -38,6 +38,7 @@ class Assets {
         this.textures['result_back'] = PIXI.Texture.from('./img/result_back.png');
         this.textures['button_retry'] = PIXI.Texture.from('./img/button_retry.png');
         this.textures['button_titleback'] = PIXI.Texture.from('./img/button_titleback.png');
+        this.textures['window'] = PIXI.Texture.from('./img/window.png');
     }
     static get instance() {
         // instanceがなければ生成

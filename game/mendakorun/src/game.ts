@@ -127,7 +127,7 @@ export class Game {
             this.buttonRetry = new PIXI.Sprite(Assets.instance.getTexture("button_retry"));
             this.buttonRetry.x = 185;
             this.buttonRetry.y = 440;
-            this.buttonRetry.zIndex = 11;
+            this.buttonRetry.zIndex = 21;
             this.buttonRetry.interactive = true;
             this.buttonRetry.on('pointertap', () => {this.nextGameState = GameState.Run})
             this.app.stage.addChild(this.buttonRetry);
@@ -135,7 +135,7 @@ export class Game {
             this.buttonTitleback = new PIXI.Sprite(Assets.instance.getTexture("button_titleback"));
             this.buttonTitleback.x = 670;
             this.buttonTitleback.y = 440;
-            this.buttonTitleback.zIndex = 11;
+            this.buttonTitleback.zIndex = 21;
             this.buttonTitleback.interactive = true;
             this.buttonTitleback.on('pointertap', () => {this.nextGameState = GameState.Start})
             this.app.stage.addChild(this.buttonTitleback);

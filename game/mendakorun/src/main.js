@@ -23,6 +23,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const game_js_1 = require("./game.js");
+const assets_js_1 = require("./assets.js");
 // PixiJSを読み込み
 const PIXI = __importStar(require("pixi.js"));
 // PIXI.JSアプリケーションを呼び出す (この数字はゲーム内の画面サイズ)
@@ -35,7 +37,76 @@ app.renderer.view.style.position = "relative";
 app.renderer.view.style.width = "1280px";
 app.renderer.view.style.height = "720px";
 app.renderer.view.style.display = "block";
-// ゲームで使用する画像をあらかじめ読み込んでおく(プリロードという)
-// v5.3.2　だと PIXI.Loader.shared.addでプリロードする
-//PIXI.loader.shared.add("./img/chara.png");
+app.stage.sortableChildren = true;
+//床
+const floorSprite = new PIXI.Sprite(assets_js_1.Assets.instance.getTexture("floor"));
+floorSprite.x = 0;
+floorSprite.y = 600;
+app.stage.addChild(floorSprite);
+floorSprite.zIndex = 0;
+//障害物
+//const objectSprite = new PIXI.Sprite(Assets.instance.getTexture("object1"));
+//app.stage.addChild(objectSprite);
+//objectSprite.zIndex = 1;
+//キャラ
+const charaSprite = new PIXI.Sprite(assets_js_1.Assets.instance.getTexture("chara"));
+app.stage.addChild(charaSprite);
+charaSprite.zIndex = 2;
+//点数
+const textPoint = new PIXI.Text('スコア：0点');
+textPoint.x = 10;
+textPoint.y = 10;
+app.stage.addChild(textPoint);
+/**
+ * 初期処理
+ */
+var game = new game_js_1.Game(app);
+game.init();
+/**
+ * メインループ
+ *
+ */
+app.ticker.add(animate);
+function animate(delta) {
+    update();
+    render();
+}
+/**
+ * 更新処理
+ */
+function update() {
+    game.update();
+    //オブジェクト削除判定
+}
+/**
+ * 描画
+ */
+function render() {
+    //カメラ
+    var dx = game.getCamera().getX();
+    var dy = game.getCamera().getY();
+    //キャラ
+    charaSprite.x = game.getChara().getPos().getX() - dx;
+    charaSprite.y = game.getChara().getPos().getY() - dy;
+    //オブジェクト
+    var num = game.getObjectNum();
+    for (var i = 0; i < num; i++) {
+        game.getObject(i).getSplite().x = game.getObject(i).getPos().getX() - dx;
+        game.getObject(i).getSplite().y = game.getObject(i).getPos().getY() - dy;
+    }
+    //スコア
+    textPoint.text = 'スコア：' + Math.floor(game.getScore()) + '点';
+}
+/**
+ * キーイベント
+ */
+//window.addEventListener('keydown', function(e) {
+//   game.keyEvent();
+//});
+/**
+ * クリックイベント
+ */
+window.addEventListener('mousedown', function (e) {
+    game.keyEvent(e);
+});
 //# sourceMappingURL=main.js.map

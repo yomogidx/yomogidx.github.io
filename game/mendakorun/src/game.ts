@@ -335,7 +335,7 @@ export class Game {
     /**
      * キー入力時の処理
      */
-    public keyEvent(e: MouseEvent): void {
+    public keyEvent(): void {
         if (this.gameState == GameState.Start) {
             this.nextGameState = GameState.Run;
         }

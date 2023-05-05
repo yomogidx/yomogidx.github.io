@@ -319,7 +319,7 @@ class Game {
     /**
      * キー入力時の処理
      */
-    keyEvent(e) {
+    keyEvent() {
         if (this.gameState == GameState.Start) {
             this.nextGameState = GameState.Run;
         }

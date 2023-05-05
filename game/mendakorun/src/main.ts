@@ -98,5 +98,12 @@ function render() {
  * クリックイベント
  */
 window.addEventListener('mousedown', function(e) {
-    game.keyEvent(e);
+    game.keyEvent();
+});
+
+/**
+ * スマホ
+ */
+window.addEventListener('ontouchstart', function(e) {
+    game.keyEvent();
 });

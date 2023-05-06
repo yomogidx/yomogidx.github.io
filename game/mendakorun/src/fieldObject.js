@@ -9,6 +9,11 @@ class FieldObject {
         this.size = new vector2d_1.Vector2d(sizeX, sizeY);
         this.deleteFlag = false;
         this.force = new vector2d_1.Vector2d(0, 0);
+        this.rotation = 0;
+        this.frame = 0;
+    }
+    update() {
+        this.frame += 1;
     }
     addPos(x, y) {
         this.pos.add(x, y);
@@ -48,12 +53,15 @@ class FieldObject {
     setForceY(y) { this.force.setY(y); }
     setDeleteFlag(flag) { this.deleteFlag = flag; }
     setSplite(splite) { this.splite = splite; }
+    setRotation(rotation) { this.rotation = rotation; }
     getId() { return this.id; }
     getPos() { return this.pos; }
     getSize() { return this.size; }
     getForce() { return this.force; }
     getDeleteFlag() { return this.deleteFlag; }
     getSplite() { return this.splite; }
+    getRotation() { return this.rotation; }
+    getFrame() { return this.frame; }
 }
 exports.FieldObject = FieldObject;
 //# sourceMappingURL=fieldObject.js.map

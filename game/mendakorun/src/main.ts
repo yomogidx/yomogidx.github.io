@@ -19,29 +19,26 @@ app.renderer.view.style.display = "block";
 
 app.stage.sortableChildren = true;
 
+//背景
+const backSprite = new PIXI.Sprite(Assets.instance.getTexture("back"));
+backSprite.x = 0;
+backSprite.y = 0;
+backSprite.zIndex = 1;
+app.stage.addChild(backSprite);
+
 //床
 const floorSprite = new PIXI.Sprite(Assets.instance.getTexture("floor"));
 floorSprite.x = 0;
 floorSprite.y = 600;
 app.stage.addChild(floorSprite);
-floorSprite.zIndex = 0;
-
-//障害物
-//const objectSprite = new PIXI.Sprite(Assets.instance.getTexture("object1"));
-//app.stage.addChild(objectSprite);
-//objectSprite.zIndex = 1;
-
-//キャラ
-const charaSprite = new PIXI.Sprite(Assets.instance.getTexture("chara"));
-app.stage.addChild(charaSprite);
-charaSprite.zIndex = 2;
+floorSprite.zIndex = 10;
 
 //点数
 const textPoint = new PIXI.Text('スコア：0点');
-textPoint.x = 10;
-textPoint.y = 10;
+textPoint.x = 50;
+textPoint.y = 20;
+textPoint.zIndex = 50;
 app.stage.addChild(textPoint);
-
 
 /**
  * 初期処理
@@ -84,14 +81,27 @@ function render() {
     var dx = game.getCamera().getX();
     var dy = game.getCamera().getY();
     //キャラ
-    charaSprite.x = game.getChara().getPos().getX() - dx;
-    charaSprite.y = game.getChara().getPos().getY() - dy;
+    game.getChara().getSplite().x = game.getChara().getPos().getX() - dx;
+    game.getChara().getSplite().y = game.getChara().getPos().getY() - dy;
     //オブジェクト
     var num = game.getObjectNum();
     for (var i = 0; i < num; i++) {
         game.getObject(i).getSplite().x = game.getObject(i).getPos().getX() - dx;
         game.getObject(i).getSplite().y = game.getObject(i).getPos().getY() - dy;
     }
+    //アイテム
+    var num = game.getItemNum();
+    for (var i = 0; i < num; i++) {
+        game.getItem(i).getSplite().x = game.getItem(i).getPos().getX() - dx;
+        game.getItem(i).getSplite().y = game.getItem(i).getPos().getY() - dy;
+    }
+    //エフェクト
+    var num = game.getEffectNum();
+    for (var i = 0; i < num; i++) {
+        game.getEffect(i).getSplite().x = game.getEffect(i).getPos().getX() - dx;
+        game.getEffect(i).getSplite().y = game.getEffect(i).getPos().getY() - dy;
+    }
+
     //スコア
     textPoint.text = 'スコア：' + Math.floor(game.getScore()) +'点'
 }

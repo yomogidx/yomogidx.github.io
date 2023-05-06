@@ -8,6 +8,8 @@ export class FieldObject {
     private force: Vector2d;
     private deleteFlag: boolean;
     private splite: PIXI.Sprite;
+    private rotation: number;
+    private frame: number;       //生成されてからのフレーム数
 
     constructor(
         posX: number = 0,
@@ -19,6 +21,12 @@ export class FieldObject {
         this.size = new Vector2d(sizeX, sizeY);
         this.deleteFlag = false;
         this.force = new Vector2d(0, 0);
+        this.rotation = 0;
+        this.frame = 0;
+    }
+
+    public update(): void  {
+        this.frame += 1;
     }
 
     public addPos(x: number, y: number): void {
@@ -55,6 +63,7 @@ export class FieldObject {
     public setForceY(y: number): void { this.force.setY(y); }
     public setDeleteFlag(flag: boolean) { this.deleteFlag = flag; }
     public setSplite(splite: PIXI.Sprite) { this.splite = splite; }
+    public setRotation(rotation: number) { this.rotation = rotation; }
 
     public getId(): string { return this.id; }
     public getPos(): Vector2d { return this.pos; }
@@ -62,4 +71,6 @@ export class FieldObject {
     public getForce(): Vector2d { return this.force; }
     public getDeleteFlag(): boolean { return this.deleteFlag; }
     public getSplite(): PIXI.Sprite { return this.splite; }
+    public getRotation(): number { return this.rotation; }
+    public getFrame(): number { return this.frame; }
 }

@@ -25,12 +25,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Assets = void 0;
 const PIXI = __importStar(require("pixi.js"));
+const sound_1 = require("@pixi/sound");
 class Assets {
     /**
      * コンストラクタ
      */
     constructor() {
         this.textures = [];
+        this.sounds = [];
+        //テクスチャ
         this.textures['floor'] = PIXI.Texture.from('./img/floor.png');
         for (var i = 1; i <= 10; i++) {
             var name = 'object' + i;
@@ -45,9 +48,18 @@ class Assets {
         this.textures['back'] = PIXI.Texture.from('./img/back.png');
         this.textures['back_cloud'] = PIXI.Texture.from('./img/back_cloud.png');
         this.textures['start_logo'] = PIXI.Texture.from('./img/start_logo.png');
-        this.textures['item_heart'] = PIXI.Texture.from('./img/item_heart.png');
+        this.textures['item1'] = PIXI.Texture.from('./img/item1.png');
+        this.textures['item2'] = PIXI.Texture.from('./img/item2.png');
         this.textures['effect_good'] = PIXI.Texture.from('./img/effect_good.png');
         this.textures['title_start'] = PIXI.Texture.from('./img/title_start.png');
+        //曲
+        this.sounds['start'] = sound_1.Sound.from('./sound/start.mp3'); //スタート
+        this.sounds['jump'] = sound_1.Sound.from('./sound/jump.mp3'); //ジャンプ
+        this.sounds['landing'] = sound_1.Sound.from('./sound/landing.mp3'); //着地
+        this.sounds['itemget1'] = sound_1.Sound.from('./sound/itemget1.mp3'); //アイテム(ハート)取得音
+        this.sounds['itemget2'] = sound_1.Sound.from('./sound/itemget2.mp3'); //アイテム(エビ)取得音
+        this.sounds['collide'] = sound_1.Sound.from('./sound/collide.mp3'); //ぶつかった音
+        this.sounds['button'] = sound_1.Sound.from('./sound/button.mp3'); //ボタンクリック音
     }
     static get instance() {
         // instanceがなければ生成
@@ -61,6 +73,7 @@ class Assets {
      * getter
      */
     getTexture(index) { return this.textures[index]; }
+    getSound(index) { return this.sounds[index]; }
 }
 exports.Assets = Assets;
 //# sourceMappingURL=assets.js.map

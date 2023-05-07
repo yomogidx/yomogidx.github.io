@@ -12,6 +12,7 @@
     "tsc": "tsc -w"
   },
   "dependencies": {
+    "@pixi/sound": "^5.1.2",
     "pixi.js": "^7.2.4"
   },
   "devDependencies": {

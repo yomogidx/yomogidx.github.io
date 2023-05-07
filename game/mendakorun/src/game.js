@@ -77,6 +77,7 @@ class Game {
         this.sceneFrame = 0;
         this.distance = 0;
         this.good = 0;
+        this.ebi = 0;
         this.jumpPower = 25;
         //スタートロゴ
         this.startLogoDispFlag = false;
@@ -172,6 +173,8 @@ class Game {
             this.startLogo.anchor.y = 0.5;
             this.startLogoDispFlag = true;
             this.app.stage.addChild(this.startLogo);
+            //スタート音
+            assets_js_1.Assets.instance.getSound("start").play();
         }
         if (this.nextGameState == GameState.Result) {
             //背景
@@ -184,7 +187,10 @@ class Game {
             this.buttonRetry.y = 460;
             this.buttonRetry.zIndex = 51;
             this.buttonRetry.interactive = true;
-            this.buttonRetry.on('pointertap', () => { this.nextGameState = GameState.Run; });
+            this.buttonRetry.on('pointertap', () => {
+                this.nextGameState = GameState.Run;
+                assets_js_1.Assets.instance.getSound("button").play();
+            });
             this.app.stage.addChild(this.buttonRetry);
             //タイトルにもどるボタン
             this.buttonTitleback = new PIXI.Sprite(assets_js_1.Assets.instance.getTexture("button_titleback"));
@@ -192,7 +198,10 @@ class Game {
             this.buttonTitleback.y = 460;
             this.buttonTitleback.zIndex = 51;
             this.buttonTitleback.interactive = true;
-            this.buttonTitleback.on('pointertap', () => { this.nextGameState = GameState.Start; });
+            this.buttonTitleback.on('pointertap', () => {
+                this.nextGameState = GameState.Start;
+                assets_js_1.Assets.instance.getSound("button").play();
+            });
             this.app.stage.addChild(this.buttonTitleback);
             //スコア
             const scoreFontStyle = new PIXI.TextStyle({
@@ -201,7 +210,7 @@ class Game {
                 fill: ['#000000'],
                 align: 'right',
             });
-            this.resultScore = new PIXI.Text(Math.floor(this.score), scoreFontStyle);
+            this.resultScore = new PIXI.Text(Math.floor(this.score) + "点", scoreFontStyle);
             this.resultScore.x = 430;
             this.resultScore.y = 185;
             this.resultScore.zIndex = 51;
@@ -213,8 +222,9 @@ class Game {
                 fill: ['#000000'],
                 align: 'left',
             });
-            this.resultDetail = new PIXI.Text("・移動距離：" + Math.floor(this.distance) + "\n" +
-                "・いいね数：" + this.good, detailFontStyle);
+            this.resultDetail = new PIXI.Text("・移動距離：" + Math.floor(this.distance) + "（+" + Math.floor(this.distance) + "点）\n" +
+                "・いいね：" + this.good + "（+" + (this.good * 10) + "点）\n" +
+                "・エビ：" + this.ebi + "（+" + (this.ebi * 30) + "点）", detailFontStyle);
             this.resultDetail.x = 250;
             this.resultDetail.y = 275;
             this.resultDetail.zIndex = 51;
@@ -352,17 +362,28 @@ class Game {
         //アイテム生成判定
         this.prevItemTime += 1;
         if (this.isGenerateItem()) {
-            this.createItem();
+            var id = 1;
+            //20%で海老出現
+            if (Math.floor(Math.random() * 5) == 0) {
+                id = 2;
+            }
+            this.createItem(id);
         }
         //アイテム削除判定
         var n = this.getItemNum();
         for (var i = n - 1; i >= 0; i--) {
             //いいね取得処理
             if (this.chara.isCollision(this.items[i])) {
-                //スコアアップ
-                this.score += 10;
-                //いいね数インクリメント
-                this.good += 1;
+                if (this.items[i].getId() == "item1") {
+                    this.score += 10;
+                    this.good += 1;
+                    assets_js_1.Assets.instance.getSound("itemget1").play(); //効果音
+                }
+                if (this.items[i].getId() == "item2") {
+                    this.score += 30;
+                    this.ebi += 1;
+                    assets_js_1.Assets.instance.getSound("itemget2").play(); //効果音
+                }
                 //エフェクト追加
                 this.createEffect();
                 //アイテム削除
@@ -444,6 +465,11 @@ class Game {
             //床との当たり判定
             if (this.checkObjectCollision() ||
                 this.checkFloorCollision()) {
+                //着地音
+                if (this.jumpState) {
+                    //Assets.instance.getSound("landing").play();
+                }
+                //着地処理
                 this.chara.addPos(0, -utilY);
                 this.chara.setForceY(0);
                 this.jumpState = false;
@@ -479,15 +505,17 @@ class Game {
     /**
      * アイテム生成処理
      */
-    createItem() {
+    createItem(id) {
+        var name = "item" + id;
         var item = new fieldObject_js_1.FieldObject();
         item.setPosX(1280 + this.chara.getPos().getX());
         item.setPosY(100 + Math.floor(Math.random() * 300));
-        item.setSizeX(30);
-        item.setSizeY(30);
+        item.setSizeX(assets_js_1.Assets.instance.getTexture(name).width);
+        item.setSizeY(assets_js_1.Assets.instance.getTexture(name).height);
+        item.setId(name);
         this.items.push(item);
         //スプライト
-        const splite = new PIXI.Sprite(assets_js_1.Assets.instance.getTexture("item_heart"));
+        const splite = new PIXI.Sprite(assets_js_1.Assets.instance.getTexture(name));
         item.setSplite(splite);
         splite.zIndex = 12;
         splite.x = item.getPos().getX();
@@ -581,10 +609,13 @@ class Game {
         this.nextGameState = GameState.Result;
         //メンダコを飛ばす
         this.moveSpeed = 0;
-        this.chara.addForce(-5, -20);
+        this.chara.setForceX(-10);
+        this.chara.setForceY(-20);
         this.chara.getSplite().anchor.x = 0.5;
         this.chara.getSplite().anchor.y = 0.5;
         this.chara.setRotation(0.1);
+        //ぶつかる音
+        assets_js_1.Assets.instance.getSound("collide").play();
     }
     /**
      * キー入力時の処理
@@ -597,10 +628,12 @@ class Game {
             if (!this.jumpState) {
                 this.jumpState = true;
                 this.chara.addForce(0, -this.jumpPower);
+                assets_js_1.Assets.instance.getSound("jump").play();
             }
             else if (!this.jump2State) {
                 this.jump2State = true;
-                this.chara.addForce(0, -this.jumpPower);
+                this.chara.setForceY(-this.jumpPower);
+                assets_js_1.Assets.instance.getSound("jump").play();
             }
         }
         else if (this.gameState == GameState.Result) {

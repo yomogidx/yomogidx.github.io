@@ -1,14 +1,14 @@
 import { Game } from "./game.js";
 import { Assets } from "./assets.js";
-
-// PixiJSを読み込み
 import * as PIXI from 'pixi.js'
 
-// PIXI.JSアプリケーションを呼び出す (この数字はゲーム内の画面サイズ)
+// PIXI.JSアプリケーションを呼び出す
 const app = new PIXI.Application<HTMLCanvasElement>({ width: 1280, height: 720, backgroundColor: 0xadd8e6 });
 
 // index.htmlのbodyにapp.viewを追加する (app.viewはcanvasのdom要素)
-document.body.appendChild(app.view);
+let el = document.getElementById('app');
+el.appendChild(app.view);
+//document.body.appendChild(app.view);
 
 // ゲームcanvasのcssを定義する
 // ここで定義した画面サイズ(width,height)は実際に画面に表示するサイズ

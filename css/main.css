@@ -1,0 +1,60 @@
+.container {
+    width: 750px;
+    margin: 0 auto;
+}
+
+.header {
+    float: left;
+    width: 100%;
+}
+
+.profile {
+  background: #FFFFFF;
+  width: 750px;
+  height: 200px;
+  /*border: 1px solid #1a1a1a;*/
+}
+
+.profile_img {
+  display: block;
+  width: 200px;
+  height: 200px;
+  border-radius:50%;
+  float: left;
+}
+
+.profile_img_area {
+  width: 750px;
+}
+
+.profile_text {
+  display: block;
+  width: 750px;
+  float: left;
+  margin: 10px;
+}
+
+.game {
+  width: 750px;
+}
+
+.game_list {
+  display: block;
+  width: 250px;
+  height: 300px;
+  float: left;
+}
+
+.twitter {
+  width: 750px;
+}
+
+
+.footer {
+  width: 750px;
+    font-size: 12px;
+    color: #ccc;
+    text-align: center;
+    border-top: 1px solid #ccc;
+    padding: 10px 0 20px;
+}
